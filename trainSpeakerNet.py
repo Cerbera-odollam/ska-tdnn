@@ -22,8 +22,8 @@ parser = argparse.ArgumentParser(description = "SpeakerNet")
 parser.add_argument('--max_frames',     type=int,   default=200,    help='Input length to the network for training')
 parser.add_argument('--eval_frames',    type=int,   default=0,      help='Input length to the network for testing 0 uses the whole files')
 parser.add_argument('--num_eval',       type=int,   default=1,      help='Input length to the network for testing 0 uses the whole files')
-parser.add_argument('--num_spk',        type=int,   default=100,    help='Number of speakers per batch, i.e., batch size = num_spk * num_utt')
-parser.add_argument('--num_utt',        type=int,   default=2,      help='Number of utterances per speaker in batch')
+parser.add_argument('--num_spk',        type=int,   default=70,    help='Number of speakers per batch, i.e., batch size = num_spk * num_utt')
+parser.add_argument('--num_utt',        type=int,   default=1,      help='Number of utterances per speaker in batch')
 parser.add_argument('--max_seg_per_spk',type=int,   default=600,    help='Maximum number of utterances per speaker per epoch')
 parser.add_argument('--num_thread',     type=int,   default=10,     help='Number of loader threads')
 parser.add_argument('--augment',        type=bool,  default=True,   help='Augment input')
@@ -32,7 +32,7 @@ parser.add_argument('--seed',           type=int,   default=10,     help='Seed f
 ## Training details
 parser.add_argument('--test_interval',  type=int,   default=1,      help='Test and save every [test_interval] epochs')
 parser.add_argument('--max_epoch',      type=int,   default=500,    help='Maximum number of epochs')
-parser.add_argument('--trainfunc',      type=str,   default="aamsoftmaxproto", help='Loss function')
+parser.add_argument('--trainfunc',      type=str,   default="aamsoftmax", help='Loss function')
 
 ## Optimizer
 parser.add_argument('--optimizer',      type=str,   default="adamW", help='sgd, adam, adamW, or adamP')
@@ -76,8 +76,8 @@ parser.add_argument('--save_path',      type=str,   default="./save/exp01", help
 ## Training and test data
 parser.add_argument('--train_list',     type=str,   default="./list/train_vox2.txt", help='Train list')
 parser.add_argument('--test_list',      type=str,   default="./list/veri_test2.txt", help='Evaluation list')
-parser.add_argument('--train_path',     type=str,   default="/home/cymoon/dataset/VoxCeleb/VoxCeleb2/dev/wav",     help='Absolute path to the train set')
-parser.add_argument('--test_path',      type=str,   default="/home/cymoon/dataset/VoxCeleb/VoxCeleb2/test/wav", help='Absolute path to the test set')
+parser.add_argument('--train_path',     type=str,   default="/home/cymoon/dataset/ASVSpoof/ASVSpoof2019/LA/ASVspoof2019_LA_train/wav",     help='Absolute path to the train set')
+parser.add_argument('--test_path',      type=str,   default="/home/cymoon/dataset/ASVSpoof/ASVSpoof2019/LA/ASVspoof2019_LA_eval/wav", help='Absolute path to the test set')
 parser.add_argument('--musan_path',     type=str,   default="/home/cymoon/dataset/MUSAN/musan_split", help='Absolute path to the test set')
 parser.add_argument('--rir_path',       type=str,   default="/home/cymoon/dataset/RIRS_NOISES/simulated_rirs", help='Absolute path to the test set')
 
