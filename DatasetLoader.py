@@ -108,7 +108,7 @@ class train_dataset_loader(Dataset):
             lines = dataset_file.readlines()
 
         # Make a dictionary of ID names and ID indices
-        dictkeys = list(set([x.split()[1] for x in lines]))
+        dictkeys = list(set([x.split()[0] for x in lines]))
         dictkeys.sort()
         dictkeys = { key : ii for ii, key in enumerate(dictkeys) }
 
@@ -117,8 +117,8 @@ class train_dataset_loader(Dataset):
         self.data_label = []
         for lidx, line in enumerate(lines):
             data = line.strip().split()
-            speaker_label = dictkeys[data[1]]
-            filename = os.path.join(train_path, data[0])
+            speaker_label = dictkeys[data[0]]
+            filename = os.path.join(train_path, data[1])
             self.data_label += [speaker_label]
             self.data_list += [filename]
 
