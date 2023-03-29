@@ -1,4 +1,5 @@
 /models
 /save
 /loss/__pycache__
-/list
+/list 
+/__pycache__
