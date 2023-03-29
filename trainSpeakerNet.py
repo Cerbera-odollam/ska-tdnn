@@ -76,8 +76,8 @@ parser.add_argument('--save_path',      type=str,   default="./save/exp01", help
 ## Training and test data
 parser.add_argument('--train_list',     type=str,   default="./list/train_vox2.txt", help='Train list')
 parser.add_argument('--test_list',      type=str,   default="./list/veri_test2.txt", help='Evaluation list')
-parser.add_argument('--train_path',     type=str,   default="",     help='Absolute path to the train set')
-parser.add_argument('--test_path',      type=str,   default="/home/cymoon/dataset/VoxCeleb/VoxCeleb1/test/wav", help='Absolute path to the test set')
+parser.add_argument('--train_path',     type=str,   default="/home/cymoon/dataset/VoxCeleb/VoxCeleb2/dev/wav",     help='Absolute path to the train set')
+parser.add_argument('--test_path',      type=str,   default="/home/cymoon/dataset/VoxCeleb/VoxCeleb2/test/wav", help='Absolute path to the test set')
 parser.add_argument('--musan_path',     type=str,   default="/home/cymoon/dataset/MUSAN/musan_split", help='Absolute path to the test set')
 parser.add_argument('--rir_path',       type=str,   default="/home/cymoon/dataset/RIRS_NOISES/simulated_rirs", help='Absolute path to the test set')
 
