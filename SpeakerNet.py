@@ -121,7 +121,8 @@ class ModelTrainer(object):
         tstart = time.time()
         with open(test_list) as f:
             lines_eval = f.readlines()
-        files = list(itertools.chain(*[x.strip().split()[-2:] for x in lines_eval]))
+        # files = list(itertools.chain(*[x.strip().split()[-2:] for x in lines_eval]))
+        files = list([x.strip().split()[1] +'.wav' for x in lines_eval])
         setfiles = list(set(files))
         setfiles.sort()
         test_dataset = test_dataset_loader(setfiles, test_path, eval_frames=eval_frames, num_eval=num_eval, **kwargs)
@@ -140,11 +141,42 @@ class ModelTrainer(object):
                 else:
                     ref_feat = self.__model__(inp1).detach().cpu()
             feats_eval[data[1][0]] = ref_feat
+            print()
             telapsed = time.time() - tstart
             if rank == 0:
                 sys.stdout.write("\r Reading {:d} of {:d}: {:.2f} Hz, embedding size {:d}".format(idx*gs, ds*gs, idx*gs/telapsed,ref_feat.size()[1]))
                 sys.stdout.flush()
+        ##enrolment loader
+        feats_enroll = {}
+        tstart = time.time()
+        with open('ASV_enroll_lst') as f:
+            lines_enroll = f.readlines()
+        # files = list(itertools.chain(*[x.strip().split()[-2:] for x in lines_eval]))
+        files = list([x.strip().split(',',' ')[0:] for x in lines_eroll])
 
+        setfiles = list(set(files))
+        setfiles.sort()
+        test_dataset = test_dataset_loader(setfiles, test_path, eval_frames=eval_frames, num_eval=num_eval, **kwargs)
+        if distributed:
+            sampler = torch.utils.data.distributed.DistributedSampler(test_dataset, shuffle=False)
+        else:
+            sampler = None
+        test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=num_thread, drop_last=False, sampler=sampler)
+        ds = test_loader.__len__()
+        gs = self.ngpu
+        for idx, data in enumerate(test_loader):
+            inp1 = data[0][0].cuda()
+            with torch.no_grad():
+                if self.swa and epoch >= self.swa_start:
+                    ref_feat = self.__swa_model__(inp1).detach().cpu()
+                else:
+                    ref_feat = self.__model__(inp1).detach().cpu()
+            feats_eval[data[1][0]] = ref_feat
+            print()
+            telapsed = time.time() - tstart
+            if rank == 0:
+                sys.stdout.write("\r Reading {:d} of {:d}: {:.2f} Hz, embedding size {:d}".format(idx*gs, ds*gs, idx*gs/telapsed,ref_feat.size()[1]))
+                sys.stdout.flush()
         ## Cohort loader if using score normalization ##
         if score_norm:
             feats_coh = {}
